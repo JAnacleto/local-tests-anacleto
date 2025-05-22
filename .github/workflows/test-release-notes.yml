@@ -1,6 +1,6 @@
 name: Review Demo Release Notes
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 on:
