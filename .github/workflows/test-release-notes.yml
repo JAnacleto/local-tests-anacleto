@@ -51,7 +51,7 @@ jobs:
 
     - name: Git fetch
       run: |
-        git fetch
+        git fetch --tags
 
     - name: Install dependencies
       run: |
