@@ -50,7 +50,8 @@ jobs:
         persist-credentials: true
 
     - name: Git fetch
-      run: git fetch
+      run: |
+        git fetch
 
     - name: Install dependencies
       run: |
