@@ -45,3 +45,5 @@ jobs:
             echo "No valid release commit message found. Exiting."
             exit 1
         fi
+
+        echo Release Type: $RELEASE_TYPE
