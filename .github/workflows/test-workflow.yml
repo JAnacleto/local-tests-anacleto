@@ -1,0 +1,47 @@
+name: Test workflow
+permissions:
+  contents: write
+  actions: write
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CONFLUENCE_BASE_URL: "mock"
+  CONFLUENCE_PAT: "mock"
+  CONFLUENCE_SPACE_KEY: "mock"
+  SONAR_BASE_URL: "mock"
+  SONAR_PROJECT_KEY: "mock"
+  SONAR_PROJECT_NAME: "mock"
+  SONAR_TOKEN: "mock"
+
+jobs:
+  prepare_new_version:
+    name: Prepare new version
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      with:
+        persist-credentials: true
+    
+    - name: Prepare new version
+      id: increment_tag
+      run: |
+        set -eo pipefail
+
+        COMMIT_SHA=${{ github.sha }}
+        commit_message=$(git show -s --format=%s $COMMIT_SHA)
+
+        if [[ $commit_message =~ ^Hotfix:\ .+$  ]]; then
+          RELEASE_TYPE="hotfix"
+        elif [[ $commit_message =~ ^Release\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          RELEASE_TYPE="release"
+        else
+            echo "No valid release commit message found. Exiting."
+            exit 1
+        fi
