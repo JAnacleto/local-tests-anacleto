@@ -39,15 +39,15 @@ jobs:
 
         echo $COMMIT_MESSAGE
 
-        [[ $COMMIT_MESSAGE =~ \#([0-9]+) ]]
-        PR_NUMBER= ${BASH_REMATCH[1]}
+        [[ $COMMIT_MESSAGE =~ \#([0-9]+) ]] &&
+        PR_NUMBER=${BASH_REMATCH[1]}
 
         if [[ $COMMIT_MESSAGE =~ ^Hotfix:\ .+$  ]]; then
           RELEASE_TYPE="hotfix"
         elif [[ $COMMIT_MESSAGE =~ ^Release\ v[0-9]+\.[0-9]+\.[0-9].*$ ]]; then
           RELEASE_TYPE="release"
-          [[ $COMMIT_MESSAGE =~ v([0-9]+\.[0-9]+\.[0-9]+) ]]
-          RELEASE_VERSION= ${BASH_REMATCH[1]}
+          [[ $COMMIT_MESSAGE =~ v([0-9]+\.[0-9]+\.[0-9]+) ]] &&
+          RELEASE_VERSION=${BASH_REMATCH[1]}
         else
             echo "No valid release commit message found. Exiting."
             exit 1
