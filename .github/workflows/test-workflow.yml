@@ -37,6 +37,8 @@ jobs:
         COMMIT_SHA=${{ github.sha }}
         COMMIT_MESSAGE=$(git show -s --format=%s $COMMIT_SHA)
 
+        echo $COMMIT_MESSAGE
+
         [[ $COMMIT_MESSAGE =~ \#([0-9]+) ]]
         PR_NUMBER= ${BASH_REMATCH[1]}
 
