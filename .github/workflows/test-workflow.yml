@@ -35,17 +35,23 @@ jobs:
         set -eo pipefail
 
         COMMIT_SHA=${{ github.sha }}
-        commit_message=$(git show -s --format=%s $COMMIT_SHA)
+        COMMIT_MESSAGE=$(git show -s --format=%s $COMMIT_SHA)
 
-        echo Commit message: $commit_message
+        [[ $COMMIT_MESSAGE =~ \#([0-9]+) ]]
+        PR_NUMBER= ${BASH_REMATCH[1]}
 
-        if [[ $commit_message =~ ^Hotfix:\ .+$  ]]; then
+        if [[ $COMMIT_MESSAGE =~ ^Hotfix:\ .+$  ]]; then
           RELEASE_TYPE="hotfix"
-        elif [[ $commit_message =~ ^Release\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        elif [[ $COMMIT_MESSAGE =~ ^Release\ v[0-9]+\.[0-9]+\.[0-9].*$ ]]; then
           RELEASE_TYPE="release"
+          [[ $COMMIT_MESSAGE =~ v([0-9]+\.[0-9]+\.[0-9]+) ]]
+          RELEASE_VERSION= ${BASH_REMATCH[1]}
         else
             echo "No valid release commit message found. Exiting."
             exit 1
         fi
 
-        echo Release Type: $RELEASE_TYPE
+        echo PR_NUMBER: $PR_NUMBER
+        echo RELEASE_TYPE: $RELEASE_TYPE
+        echo RELEASE_VERSION: $RELEASE_VERSION
+
