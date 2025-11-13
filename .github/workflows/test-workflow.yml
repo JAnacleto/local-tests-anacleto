@@ -37,6 +37,8 @@ jobs:
         COMMIT_SHA=${{ github.sha }}
         commit_message=$(git show -s --format=%s $COMMIT_SHA)
 
+        echo Commit message: $commit_message
+
         if [[ $commit_message =~ ^Hotfix:\ .+$  ]]; then
           RELEASE_TYPE="hotfix"
         elif [[ $commit_message =~ ^Release\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
